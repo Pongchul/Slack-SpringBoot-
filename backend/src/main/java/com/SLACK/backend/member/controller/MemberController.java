@@ -1,5 +1,6 @@
 package com.SLACK.backend.member.controller;
 
+import com.SLACK.backend.member.dto.request.LoginRequest;
 import com.SLACK.backend.member.dto.request.SignUpRequest;
 import com.SLACK.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,13 @@ public class MemberController {
         memberService.deleteId(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody LoginRequest request) {
+        memberService.login(request);
+
+        return ResponseEntity.ok().build();
     }
 
 

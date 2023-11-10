@@ -1,6 +1,7 @@
 package com.SLACK.backend.member.service;
 
 import com.SLACK.backend.member.domain.*;
+import com.SLACK.backend.member.dto.request.LoginRequest;
 import com.SLACK.backend.member.dto.request.SignUpRequest;
 import com.SLACK.backend.member.exception.MemberErrorCode;
 import com.SLACK.backend.member.exception.MemberException;
@@ -40,6 +41,15 @@ public class MemberService {
         member.deleted();
     }
 
+    @Transactional
+    public void login(LoginRequest request) {
+        // TODO : 로그인 구현하기 -> 폼 데이터에서 이메일과 비밀번호가 들어왔을때 디비에 있는 멤버 테이블과 조회해서 일치한지 확인하기
+        Member member = memberRepository.findByEmail(Email.from(request.getEmail()))
+                .orElseThrow(() -> new MemberException(MemberErrorCode.EMAIL_IS_WRONG));
+        this.checkPassword(request.getPassword());
+
+    }
+
     private void validateEmailIsNotDuplicated(Email email) {
         if (memberRepository.existsByEmail(email)) {
             throw new MemberException(MemberErrorCode.SIGNUP_EMAIL_DUPLICATED);
@@ -57,6 +67,15 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXIST));
         validateExistMember(member);
         return member;
+    }
+
+    public void checkPassword(String password) {
+        Member member = new Member();
+
+        String hashedPassword = String.valueOf(Password.encrypt(password, passwordEncoder));
+        if (!member.getPassword().equals(hashedPassword)) {
+            throw new MemberException(MemberErrorCode.PASSWORD_IS_WRONG);
+        }
     }
 
     private void validateExistMember(Member member) {

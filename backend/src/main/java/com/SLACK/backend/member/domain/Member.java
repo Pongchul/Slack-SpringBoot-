@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 
+import java.util.Optional;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -36,6 +38,11 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
+    public Member(Email email, Password password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public void deleted() {
         email = null;
         password = null;
@@ -43,8 +50,23 @@ public class Member extends BaseTimeEntity {
         deleted = true;
     }
 
+    public String getEmail() {
+        return Optional.ofNullable(email)
+                .map(Email::getValue)
+                .orElse("");
+    }
 
+    public String getPassword() {
+        return Optional.ofNullable(password)
+                .map(Password::getValue)
+                .orElse("");
+    }
 
+    public String getNickname() {
+        return Optional.ofNullable(nickname)
+                .map(Nickname::getValue)
+                .orElse("");
+    }
 
 
 }
