@@ -12,6 +12,8 @@ public interface WorkspaceRepository extends Repository<Workspace, Long> {
 
     Optional<Workspace> findById(Long id);
 
+    Optional<Workspace> findWorkspacesById(Long id);
+
     boolean existsById(Long id);
 
 }

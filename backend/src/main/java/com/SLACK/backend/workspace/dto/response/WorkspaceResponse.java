@@ -1,5 +1,6 @@
 package com.SLACK.backend.workspace.dto.response;
 
+import com.SLACK.backend.workspace.domain.Workspace;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,13 @@ public class WorkspaceResponse {
 
     private Long ownerId;
     private boolean deleted;
+
+    public WorkspaceResponse(String url, String name) {
+        this.url = url;
+        this.name = name;
+    }
+
+    public static WorkspaceResponse toResponse(Workspace workspace) {
+        return new WorkspaceResponse(workspace.getUrl(), workspace.getName());
+    }
 }

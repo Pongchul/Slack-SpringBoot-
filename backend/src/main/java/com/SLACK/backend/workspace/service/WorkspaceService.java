@@ -22,7 +22,7 @@ public class WorkspaceService {
 
     @Transactional
     public Long create(Long ownerId, WorkspaceRequest request) {
-        Member owner = memberService.findMember(ownerId);
+        Member owner = memberService.findMemberById(ownerId);
         Workspace workspace = new Workspace(request.getOwnerId(), request.getName(), request.getUrl(), request.isDeleted());
         Workspace saveWorkspace = workspaceRepository.save(workspace);
 
@@ -30,8 +30,8 @@ public class WorkspaceService {
     }
 
 
-    public Workspace findWorkspace(Long id) {
-        return workspaceRepository.findById(id)
+    public Workspace findWorkspacesById(Long id) {
+        return workspaceRepository.findWorkspacesById(id)
                 .orElseThrow(() -> new WorkspaceException(WorkspaceErrorCode.WORKSPACE_IS_NOT_EXIST));
     }
 

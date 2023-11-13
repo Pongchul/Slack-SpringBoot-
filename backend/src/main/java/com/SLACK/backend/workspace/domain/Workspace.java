@@ -6,9 +6,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "tb_workspace")
 public class Workspace extends BaseTimeEntity {
 
     @Id
@@ -25,9 +28,32 @@ public class Workspace extends BaseTimeEntity {
     @Embedded
     private WorkspaceUrl url;
 
+    @Column(nullable = false)
+    private boolean deleted;
 
+    public Workspace(Member host, WorkspaceName name, WorkspaceUrl url, boolean deleted) {
+        this.host = host;
+        this.name = name;
+        this.url = url;
+        this.deleted = deleted;
+    }
 
+    public Workspace(Long ownerId, String name, String url, boolean deleted) {
+        this.host = host;
+        this.name = WorkspaceName.from(name);
+        this.url = WorkspaceUrl.from(url);
+        this.deleted = deleted;
+    }
 
+    public String getUrl() {
+        return Optional.ofNullable(url)
+                .map(WorkspaceUrl::getValue)
+                .orElse("");
+    }
 
-
+    public String getName() {
+        return Optional.ofNullable(name)
+                .map(WorkspaceName::getValue)
+                .orElse("");
+    }
 }
