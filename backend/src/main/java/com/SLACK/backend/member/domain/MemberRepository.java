@@ -10,11 +10,9 @@ public interface MemberRepository extends Repository<Member, Long> {
 
     Optional<Member> findByEmail(Email email);
 
-    Optional<Member> findByNickname(Nickname nickname);
-
-    Optional<Member> findByEmailAndPassword(Email email, Password password);
-
     Optional<Member> findById(Long member);
+
+    Optional<Member> findByPassword(Password password);
 
     boolean existsByEmail(Email email);
 

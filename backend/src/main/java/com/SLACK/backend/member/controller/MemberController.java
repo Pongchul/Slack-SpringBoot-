@@ -1,7 +1,10 @@
 package com.SLACK.backend.member.controller;
 
+import com.SLACK.backend.member.domain.Email;
+import com.SLACK.backend.member.domain.Member;
 import com.SLACK.backend.member.dto.request.LoginRequest;
 import com.SLACK.backend.member.dto.request.SignUpRequest;
+import com.SLACK.backend.member.dto.response.LoginResponse;
 import com.SLACK.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping
+    public ResponseEntity<LoginResponse> loginInfo  (@RequestBody LoginResponse request) {
+        LoginResponse response = LoginResponse.toResponse(memberService.findIdByEmail(Email.from(request.getEmail())));
+
+        return ResponseEntity.ok().body(response);
+    }
 
     @PostMapping
     public ResponseEntity<Void> signUp(@RequestBody SignUpRequest request) {
@@ -30,11 +40,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         memberService.login(request);
+        LoginResponse response = LoginResponse.toResponse(memberService.findIdByEmail(Email.from(request.getEmail())));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(response);
     }
+
+
 
 
 }

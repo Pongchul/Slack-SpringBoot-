@@ -37,17 +37,16 @@ public class MemberService {
 
     @Transactional
     public void deleteId(Long id) {
-        Member member = this.findMember(id);
+        Member member = this.findMemberById(id);
         member.deleted();
     }
 
     @Transactional
-    public void login(LoginRequest request) {
-        // TODO : 로그인 구현하기 -> 폼 데이터에서 이메일과 비밀번호가 들어왔을때 디비에 있는 멤버 테이블과 조회해서 일치한지 확인하기
+    public Long login(LoginRequest request) {
         Member member = memberRepository.findByEmail(Email.from(request.getEmail()))
                 .orElseThrow(() -> new MemberException(MemberErrorCode.EMAIL_IS_WRONG));
-        this.checkPassword(request.getPassword());
-
+        member.checkPassword(request.getPassword());
+        return member.getId();
     }
 
     private void validateEmailIsNotDuplicated(Email email) {
@@ -62,20 +61,18 @@ public class MemberService {
         }
     }
 
-    public Member findMember(Long id) {
+    public Member findMemberById(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXIST));
         validateExistMember(member);
         return member;
     }
 
-    public void checkPassword(String password) {
-        Member member = new Member();
-
-        String hashedPassword = String.valueOf(Password.encrypt(password, passwordEncoder));
-        if (!member.getPassword().equals(hashedPassword)) {
-            throw new MemberException(MemberErrorCode.PASSWORD_IS_WRONG);
-        }
+    public Member findIdByEmail(Email email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXIST));
+        validateExistMember(member);
+        return member;
     }
 
     private void validateExistMember(Member member) {
