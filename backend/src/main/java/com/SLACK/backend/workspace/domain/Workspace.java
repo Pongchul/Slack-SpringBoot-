@@ -6,7 +6,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Getter
@@ -45,6 +49,7 @@ public class Workspace extends BaseTimeEntity {
         this.deleted = deleted;
     }
 
+
     public String getUrl() {
         return Optional.ofNullable(url)
                 .map(WorkspaceUrl::getValue)
@@ -55,5 +60,15 @@ public class Workspace extends BaseTimeEntity {
         return Optional.ofNullable(name)
                 .map(WorkspaceName::getValue)
                 .orElse("");
+    }
+
+    public List<Workspace> getWorkspaces() {
+        List<Workspace> workspaces = new ArrayList<>();
+        workspaces.stream()
+                .map(Workspace::getWorkspaces)
+                .collect(Collectors.toUnmodifiableList());
+
+        return workspaces;
+
     }
 }

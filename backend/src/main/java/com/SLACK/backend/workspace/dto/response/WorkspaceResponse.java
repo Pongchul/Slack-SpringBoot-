@@ -6,21 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 public class WorkspaceResponse {
 
-    private String url;
+    private Long id;
     private String name;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime updatedAt;
-
+    private String url;
     private Long ownerId;
-    private boolean deleted;
 
     public WorkspaceResponse(String url, String name) {
         this.url = url;
@@ -29,5 +25,11 @@ public class WorkspaceResponse {
 
     public static WorkspaceResponse toResponse(Workspace workspace) {
         return new WorkspaceResponse(workspace.getUrl(), workspace.getName());
+    }
+
+    public static List<WorkspaceResponse> workspaceResponses(List<Workspace> workspaces) {
+        return workspaces.stream()
+                .map(WorkspaceResponse::toResponse)
+                .collect(Collectors.toList());
     }
 }
