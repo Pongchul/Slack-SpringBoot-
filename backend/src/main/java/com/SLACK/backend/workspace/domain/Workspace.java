@@ -24,7 +24,7 @@ public class Workspace extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    private Member host;
+    private Member owner;
 
     @Embedded
     private WorkspaceName name;
@@ -35,15 +35,14 @@ public class Workspace extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean deleted;
 
-    public Workspace(Member host, WorkspaceName name, WorkspaceUrl url, boolean deleted) {
-        this.host = host;
+    public Workspace(Member owner, WorkspaceName name, WorkspaceUrl url, boolean deleted) {
+        this.owner = owner;
         this.name = name;
         this.url = url;
         this.deleted = deleted;
     }
 
     public Workspace(Long ownerId, String name, String url, boolean deleted) {
-        this.host = host;
         this.name = WorkspaceName.from(name);
         this.url = WorkspaceUrl.from(url);
         this.deleted = deleted;

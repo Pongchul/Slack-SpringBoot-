@@ -1,11 +1,9 @@
 package com.SLACK.backend.workspace.dto.response;
 
 import com.SLACK.backend.workspace.domain.Workspace;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
