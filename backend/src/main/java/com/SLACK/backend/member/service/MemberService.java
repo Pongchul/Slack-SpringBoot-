@@ -42,12 +42,15 @@ public class MemberService {
     }
 
     @Transactional
-    public Long login(LoginRequest request) {
-        Member member = memberRepository.findByEmail(Email.from(request.getEmail()))
+    public void login(LoginRequest request) {
+        Member member = memberRepository.findMemberByEmail(Email.from(request.getEmail()))
                 .orElseThrow(() -> new MemberException(MemberErrorCode.EMAIL_IS_WRONG));
-        member.checkPassword(request.getPassword());
-        return member.getId();
+
+        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.PASSWORD_IS_WRONG_LENGTH);
+        }
     }
+
 
     private void validateEmailIsNotDuplicated(Email email) {
         if (memberRepository.existsByEmail(email)) {
@@ -68,7 +71,7 @@ public class MemberService {
         return member;
     }
 
-    public Member findIdByEmail(Email email) {
+    public Member findMemberByEmail(Email email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXIST));
         validateExistMember(member);

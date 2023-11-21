@@ -5,12 +5,15 @@ import com.SLACK.backend.member.domain.Member;
 import com.SLACK.backend.member.dto.request.LoginRequest;
 import com.SLACK.backend.member.dto.request.SignUpRequest;
 import com.SLACK.backend.member.dto.response.LoginResponse;
+import com.SLACK.backend.member.dto.response.MemberResponse;
 import com.SLACK.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -19,10 +22,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<LoginResponse> loginInfo  (@RequestBody LoginResponse request) {
-        LoginResponse response = LoginResponse.toResponse(memberService.findIdByEmail(Email.from(request.getEmail())));
+    public ResponseEntity<MemberResponse> loginInfo(Long id) {
+        MemberResponse response = MemberResponse.toResponse(memberService.findMemberById(id));
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
@@ -42,7 +45,9 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         memberService.login(request);
-        LoginResponse response = LoginResponse.toResponse(memberService.findIdByEmail(Email.from(request.getEmail())));
+        LoginResponse response = LoginResponse.toResponse(memberService.findMemberByEmail(Email.from(request.getEmail())));
+        log.info("<<<<< response >>>>>", response);
+
 
         return ResponseEntity.ok().body(response);
     }

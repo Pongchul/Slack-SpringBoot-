@@ -1,17 +1,11 @@
 package com.SLACK.backend.member.domain;
 
 import com.SLACK.backend.common.BaseTimeEntity;
-import com.SLACK.backend.member.exception.MemberErrorCode;
-import com.SLACK.backend.member.exception.MemberException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Type;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -55,19 +49,6 @@ public class Member extends BaseTimeEntity {
         password = null;
         nickname = null;
         deleted = true;
-    }
-
-    public void checkPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
-        log.info(" <<<<<< hashedPassword >>>>>> ", hashedPassword);
-
-        boolean pwMatches = passwordEncoder.matches(this.getPassword(), hashedPassword);
-
-//        if (!pwMatches) {
-//            throw new MemberException(MemberErrorCode.PASSWORD_IS_WRONG);
-//        }
-
     }
 
     public String getEmail() {
