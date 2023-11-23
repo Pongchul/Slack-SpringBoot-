@@ -7,6 +7,7 @@ import com.SLACK.backend.member.dto.request.SignUpRequest;
 import com.SLACK.backend.member.dto.response.LoginResponse;
 import com.SLACK.backend.member.dto.response.MemberResponse;
 import com.SLACK.backend.member.service.MemberService;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping
-    public ResponseEntity<MemberResponse> loginInfo(Long id) {
-        MemberResponse response = MemberResponse.toResponse(memberService.findMemberById(id));
 
-        return ResponseEntity.ok(response);
+    @GetMapping
+    public ResponseEntity<MemberResponse> loginInfo(@RequestBody LoginRequest request) {
+        Member member = memberService.findMemberByEmail(Email.from(request.getEmail()));
+        MemberResponse response = MemberResponse.toResponse(member);
+
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping
@@ -46,8 +49,6 @@ public class MemberController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         memberService.login(request);
         LoginResponse response = LoginResponse.toResponse(memberService.findMemberByEmail(Email.from(request.getEmail())));
-        log.info("<<<<< response >>>>>", response);
-
 
         return ResponseEntity.ok().body(response);
     }

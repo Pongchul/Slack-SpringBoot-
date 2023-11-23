@@ -1,6 +1,8 @@
 package com.SLACK.backend.member.dto.response;
 
 import com.SLACK.backend.member.domain.Member;
+import com.SLACK.backend.workspace.domain.Workspace;
+import com.SLACK.backend.workspace.dto.response.WorkspaceResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
