@@ -33,7 +33,7 @@ public class ChannelService {
     @Transactional
     public ChannelIdResponse create(Long workspaceId, ChannelRequest request) {
         Workspace workspacesById = workspaceService.findWorkspacesById(workspaceId);
-        Channel channel = new Channel(request.getId(), request.getName(), request.isPrivate(), workspacesById);
+        Channel channel = new Channel(request.getChannelId(), request.getName(), request.isPrivate(), workspacesById);
         Channel savedChannel = channelRepository.save(channel);
 
         return ChannelIdResponse.toResponse(savedChannel);

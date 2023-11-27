@@ -26,6 +26,7 @@ public class Channel extends BaseTimeEntity {
     @Column(name = "private")
     private boolean isPrivate;  // 비공개 여부
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workspace_id")
     private Workspace workspaceId;
@@ -47,6 +48,7 @@ public class Channel extends BaseTimeEntity {
     public String getName() {
         return name.getValue();
     }
+
 
     public List<Channel> getChannels() {
         List<Channel> channels = new ArrayList<>();
