@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Getter
@@ -35,19 +34,23 @@ public class Workspace extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean deleted;
 
-    public Workspace(Member owner, WorkspaceName name, WorkspaceUrl url, boolean deleted) {
-        this.owner = owner;
+    public Workspace(Long owner, WorkspaceName name, WorkspaceUrl url, boolean deleted) {
+        this.owner = new Member(owner);
         this.name = name;
         this.url = url;
         this.deleted = deleted;
     }
 
-    public Workspace(Long ownerId, String name, String url, boolean deleted) {
+    public Workspace(Long memberId, String name, String url) {
+        this.owner = new Member(memberId);
         this.name = WorkspaceName.from(name);
         this.url = WorkspaceUrl.from(url);
-        this.deleted = deleted;
+        this.deleted = false;
     }
 
+    public Member getOwnerId() {
+        return getOwnerId();
+    }
 
     public String getUrl() {
         return Optional.ofNullable(url)

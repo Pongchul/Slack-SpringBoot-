@@ -1,11 +1,11 @@
 package com.SLACK.backend.workspace.service;
 
-import com.SLACK.backend.member.domain.Member;
 import com.SLACK.backend.member.service.MemberService;
 import com.SLACK.backend.workspace.domain.Workspace;
+import com.SLACK.backend.workspace.domain.WorkspaceName;
 import com.SLACK.backend.workspace.domain.WorkspaceRepository;
+import com.SLACK.backend.workspace.domain.WorkspaceUrl;
 import com.SLACK.backend.workspace.dto.request.WorkspaceRequest;
-import com.SLACK.backend.workspace.dto.response.WorkspaceIdResponse;
 import com.SLACK.backend.workspace.dto.response.WorkspaceResponse;
 import com.SLACK.backend.workspace.exception.WorkspaceErrorCode;
 import com.SLACK.backend.workspace.exception.WorkspaceException;
@@ -23,13 +23,15 @@ public class WorkspaceService {
     private final WorkspaceRepository workspaceRepository;
     private final MemberService memberService;
 
-    @Transactional
-    public WorkspaceIdResponse create(Long ownerId, WorkspaceRequest request) {
-        Member owner = memberService.findMemberById(ownerId);
-        Workspace workspace = new Workspace(owner.getId(), request.getName(), request.getUrl(), request.isDeleted());
-        Workspace saveWorkspace = workspaceRepository.save(workspace);
 
-        return WorkspaceIdResponse.toResponse(saveWorkspace);
+    @Transactional
+    public void create(Long memberId, WorkspaceRequest request) {
+        WorkspaceUrl url = WorkspaceUrl.from(request.getUrl());
+        WorkspaceName name = WorkspaceName.from(request.getName());
+
+        Workspace workspace = new Workspace(memberId, name, url, false);
+        workspaceRepository.save(workspace);
+
     }
 
 

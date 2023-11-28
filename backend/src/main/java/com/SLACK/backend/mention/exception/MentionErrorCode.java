@@ -1,6 +1,6 @@
 package com.SLACK.backend.mention.exception;
 
-import com.SLACK.backend.auth.exception.ErrorCode;
+import com.SLACK.backend.common.exception.ErrorCode;
 
 public enum MentionErrorCode implements ErrorCode {
 

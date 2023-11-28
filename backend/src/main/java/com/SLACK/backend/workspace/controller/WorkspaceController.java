@@ -7,6 +7,7 @@ import com.SLACK.backend.workspace.dto.response.WorkspaceIdResponse;
 import com.SLACK.backend.workspace.dto.response.WorkspaceResponse;
 import com.SLACK.backend.workspace.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +22,11 @@ public class WorkspaceController {
     private final WorkspaceService workspaceService;
 
     @PostMapping
-    public ResponseEntity<WorkspaceIdResponse> create(Long ownerId, WorkspaceRequest request) {
-        WorkspaceIdResponse response = workspaceService.create(ownerId, request);
-        URI uri = URI.create("/api/workspaces/" + response.getWorkspaceId());
+    public ResponseEntity<Void> create(Long ownerId, WorkspaceRequest request) {
+        workspaceService.create(ownerId, request);
 
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
 
     @GetMapping

@@ -1,5 +1,6 @@
 package com.SLACK.backend.workspace.dto.response;
 
+import com.SLACK.backend.member.domain.Member;
 import com.SLACK.backend.workspace.domain.Workspace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,15 +15,11 @@ public class WorkspaceResponse {
     private Long id;
     private String name;
     private String url;
-    private Long ownerId;
+    private Member ownerId;
 
-    public WorkspaceResponse(String url, String name) {
-        this.url = url;
-        this.name = name;
-    }
 
     public static WorkspaceResponse toResponse(Workspace workspace) {
-        return new WorkspaceResponse(workspace.getUrl(), workspace.getName());
+        return new WorkspaceResponse(workspace.getId(), workspace.getUrl(), workspace.getName(), workspace.getOwnerId());
     }
 
     public static List<WorkspaceResponse> workspaceResponses(List<Workspace> workspaces) {

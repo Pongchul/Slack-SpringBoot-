@@ -1,6 +1,6 @@
 package com.SLACK.backend.workspace.exception;
 
-import com.SLACK.backend.global.exception.ErrorCode;
+import com.SLACK.backend.common.exception.ErrorCode;
 
 public enum WorkspaceErrorCode implements ErrorCode {
 
