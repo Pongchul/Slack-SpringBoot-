@@ -1,10 +1,15 @@
-package com.SLACK.backend.member.service;
+package com.SLACK.backend.member.application;
 
+import com.SLACK.backend.auth.domain.RefreshToken;
+import com.SLACK.backend.auth.domain.RefreshTokenRepository;
+import com.SLACK.backend.auth.dto.TokenDto;
+import com.SLACK.backend.auth.support.JwtProvider;
 import com.SLACK.backend.member.domain.*;
 import com.SLACK.backend.member.dto.request.LoginRequest;
 import com.SLACK.backend.member.dto.request.SignUpRequest;
 import com.SLACK.backend.member.exception.MemberErrorCode;
 import com.SLACK.backend.member.exception.MemberException;
+import org.antlr.v4.runtime.Token;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +24,8 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
@@ -42,13 +49,21 @@ public class MemberService {
     }
 
     @Transactional
-    public void login(LoginRequest request) {
+    public TokenDto login(LoginRequest request) {
         Member member = memberRepository.findMemberByEmail(Email.from(request.getEmail()))
                 .orElseThrow(() -> new MemberException(MemberErrorCode.EMAIL_IS_WRONG));
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new MemberException(MemberErrorCode.PASSWORD_IS_WRONG_LENGTH);
         }
+
+        String accessToken = jwtProvider.createAccessToken(member.getId());
+        String refreshToken = jwtProvider.createRefreshToken();
+
+        refreshTokenRepository.deleteByMemberId(member.getId());
+        refreshTokenRepository.save(new RefreshToken(member.getId(), refreshToken));
+
+        return TokenDto.of(accessToken, refreshToken);
     }
 
 
