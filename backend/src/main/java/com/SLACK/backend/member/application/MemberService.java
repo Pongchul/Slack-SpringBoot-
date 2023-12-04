@@ -66,6 +66,10 @@ public class MemberService {
         return TokenDto.of(accessToken, refreshToken);
     }
 
+    public void logout(Long memberId) {
+        refreshTokenRepository.deleteByMemberId(memberId);
+    }
+
 
     private void validateEmailIsNotDuplicated(Email email) {
         if (memberRepository.existsByEmail(email)) {
