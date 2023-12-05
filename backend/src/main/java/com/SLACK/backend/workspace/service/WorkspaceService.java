@@ -1,6 +1,6 @@
 package com.SLACK.backend.workspace.service;
 
-import com.SLACK.backend.member.service.MemberService;
+import com.SLACK.backend.member.application.MemberService;
 import com.SLACK.backend.workspace.domain.Workspace;
 import com.SLACK.backend.workspace.domain.WorkspaceName;
 import com.SLACK.backend.workspace.domain.WorkspaceRepository;
