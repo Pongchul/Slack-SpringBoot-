@@ -2,7 +2,7 @@ server:
   address: localhost
   port: 8085
 
-
+---
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,6 +21,14 @@ spring:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
 
+---
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate.type: debug
+
+---
+
+jwt:
+  secret-key: eyJpc3MiOiJ2ZWxvcGVydC5jb20iLCJleHAiOiIxNDg1MjcwMDAwMDAwIiwiaHR0cHM6Ly92ZWxvcGVydC5jb20vand0X2NsYWltcy9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTEwMjgzNzM3MjcxMDIiLCJ1c2VybmFtZSI6InZlbG9wZXJ0In0
+  access-token-expiration-time: 60000
+  refresh-token-expiration-time: 60000
