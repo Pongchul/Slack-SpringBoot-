@@ -49,19 +49,22 @@ public class JwtProvider {
     }
 
     public String getPayload(String token) {
-        return validateParseJws(token).getBody().getSubject();
+        return getClaims(token).getBody().getSubject();
     }
 
-    public Jws<Claims> validateParseJws(String token) {
+    public boolean validateTokenNotUsable(String token) {
         try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
+            Jws<Claims> claims = getClaims(token);
+
+            return claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             throw new AuthException(TOKEN_IS_EXPIRED);
-        } catch (JwtException e) {
-            throw new AuthException(INVALID_TOKEN);
+        } catch (JwtException | IllegalArgumentException e) {
+            return true;
         }
+    }
+
+    private Jws<Claims> getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     }
 }

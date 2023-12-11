@@ -1,10 +1,7 @@
 package com.SLACK.backend.auth.domain;
 
 import com.SLACK.backend.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,6 +11,7 @@ import static lombok.EqualsAndHashCode.*;
 
 @Getter
 @Entity
+@Table(name = "tb_token")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class RefreshToken extends BaseTimeEntity {
