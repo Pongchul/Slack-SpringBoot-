@@ -1,30 +1,29 @@
 import { Button } from '@/pages/SignUp/styles';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import fetcher from '@/shared/utils/fetcher';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
+import { Route, useNavigate } from 'react-router-dom';
 
 const Workspace:FC= ({children}:any) => {
-  const { data, error, mutate } = useSWR('/api/members', fetcher);
+  const navigate = useNavigate();
+  // const { data, error, mutate } = useSWR('/api/members', fetcher);
   const onLogout = useCallback(() => {
     axios.post('/api/members/logout', null, {
       withCredentials: true,
 
     })
       .then(() => {
-        mutate();
+        localStorage.removeItem('login-token')
       })
   }, [])
 
-  if (!data) {
-    return <Route path="/login" />
-  }
+
 
   return (
     <div>
     <button onClick={onLogout}> Logout </button>
-  {children}
+  {children} 테스트
     </div>
   )
 }
