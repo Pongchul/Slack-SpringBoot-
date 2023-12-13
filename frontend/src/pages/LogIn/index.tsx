@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Form, Header, Input, Label, LinkContainer, Error } from '@/pages/SignUp/styles';
-import { Link, Navigate, Route, useRevalidator } from 'react-router-dom';
+import { Link, Navigate, Route, useRevalidator, useNavigate } from 'react-router-dom';
 import useInput from '@/shared/hooks/useInput';
 import axios from 'axios';
 import useSWR, { useSWRConfig } from 'swr';
 import fetcher from '@/shared/utils/fetcher';
 
 const LogIn = () => {
-  const { data, error } = useSWR('/api/members', fetcher);
-  const { mutate } = useSWRConfig();
+  const navigate = useNavigate();
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -25,9 +24,10 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          mutate('/api/members');
-          console.log("<<<< response >>>>" , response);
+          localStorage.setItem('login-token', response.data.accessToken);
+          console.log("저장이 완료 되었습니다 ~")
         })
+
         .catch((error) => {
           setLogInError(error.response?.status === 401);
         });
@@ -35,9 +35,11 @@ const LogIn = () => {
     [email, password],
   );
 
-  if (data) {
-    return <Route path="/workspace/channel" />
+  if (localStorage.getItem('login-token')) {
+    navigate("/workspace/channel")
+    console.log("로그인에 성공하였습니다.")
   }
+
 
   return (
     <div id="container">
