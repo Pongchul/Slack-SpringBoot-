@@ -5,12 +5,11 @@ import com.SLACK.backend.auth.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @NoArgsConstructor
 public class SlackTokenExtractor {
 
-    private static final String SLACK_HEADER = "Refresh";
+    public static final String SLACK_HEADER = "Refresh";
     private static final String SLACK_TYPE = "Slack ";
     private static final String SLACK_JWT_REGEX = "^Slack [A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$";
 
