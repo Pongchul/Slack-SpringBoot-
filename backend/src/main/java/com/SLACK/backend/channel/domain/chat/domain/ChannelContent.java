@@ -16,7 +16,7 @@ public class ChannelContent {
     private static final int MAXIMUM_LENGTH = 255;
 
     @Lob
-    @Column(name = "content")
+    @Column(name = "content", length = 255)
     private String value;
 
     public ChannelContent(String value) {
