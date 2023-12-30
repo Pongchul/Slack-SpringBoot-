@@ -23,7 +23,7 @@ public class ChannelMember extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Member member;
+    private Member host;
 
 
 }
