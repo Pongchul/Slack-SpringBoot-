@@ -30,14 +30,14 @@ public class Email {
         return new Email(value);
     }
 
-    public static void validLengthInRange(String value) {
+    private static void validLengthInRange(String value) {
         int length = value.length();
         if (length > MAX_LENGTH || length < MIN_LENGTH) {
             throw new MemberException(EMAIL_IS_WRONG_LENGTH);
         }
     }
 
-    public static void validEmailFormat(String value) {
+    private static void validEmailFormat(String value) {
         if (!value.contains(EMAIL_FORMAT)) {
             throw new MemberException(EMAIL_IS_WRONG_FORMAT);
         }
