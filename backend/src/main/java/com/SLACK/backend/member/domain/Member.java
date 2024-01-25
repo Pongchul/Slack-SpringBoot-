@@ -2,6 +2,7 @@ package com.SLACK.backend.member.domain;
 
 import com.SLACK.backend.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Entity
 @Getter
 @Slf4j
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_member")
 public class Member extends BaseTimeEntity {
 
