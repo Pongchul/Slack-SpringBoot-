@@ -23,6 +23,6 @@ public enum Category {
         return Arrays.stream(values())
                 .filter(category -> category.id == id)
                 .findFirst()
-                .orElseThrow(() -> new MentionException(MentionErrorCode.CATEGORY_NOT_EXIST));
+                .orElseThrow(() -> new MentionException(MentionErrorCode.MENTION_NOT_EXIST));
     }
 }
