@@ -4,13 +4,14 @@ import com.SLACK.backend.channel.domain.Channel;
 import com.SLACK.backend.common.BaseTimeEntity;
 import com.SLACK.backend.member.domain.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "tb_channel_member")
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChannelMember extends BaseTimeEntity {
 
     @Id

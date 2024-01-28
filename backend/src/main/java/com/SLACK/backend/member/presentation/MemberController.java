@@ -52,6 +52,7 @@ public class MemberController {
     public ResponseEntity<Void> logout(@Authenticated Long memberId) {
         memberService.logout(memberId);
 
+
         return ResponseEntity.noContent().build();
     }
 }
