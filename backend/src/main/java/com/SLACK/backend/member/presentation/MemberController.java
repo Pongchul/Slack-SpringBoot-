@@ -52,7 +52,7 @@ public class MemberController {
     public ResponseEntity<Void> logout(@Authenticated Long memberId) {
         memberService.logout(memberId);
 
-
+        log.info("TEST");
         return ResponseEntity.noContent().build();
     }
 }
