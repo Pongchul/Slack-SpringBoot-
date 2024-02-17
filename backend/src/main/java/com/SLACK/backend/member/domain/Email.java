@@ -3,6 +3,7 @@ package com.SLACK.backend.member.domain;
 import com.SLACK.backend.member.exception.MemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import static com.SLACK.backend.member.exception.MemberErrorCode.*;
 
 @Getter
 @Embeddable
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Email {
 
     private static final int MIN_LENGTH = 8;
